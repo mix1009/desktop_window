@@ -1,14 +1,15 @@
 # desktop_window
 
-A new flutter plugin project.
+Flutter plugin for Flutter desktop(macOS only) to change window size.
 
-## Getting Started
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+## Usage
+```
+import 'package:desktop_window/desktop_window.dart';
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+Future testWindowFunctions() async {
+    Size size = await DesktopWindow.getWindowSize();
+    print(size);
+    await DesktopWindow.setWindowSize(Size(500,500));
+}
+```
