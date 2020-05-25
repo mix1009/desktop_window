@@ -10,8 +10,7 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
-    case "getPlatformVersion":
-      result("macOS " + ProcessInfo.processInfo.operatingSystemVersionString)
+        
     case "getWindowSize":
         if let window = NSApplication.shared.mainWindow {
             let width = window.frame.size.width;
@@ -35,6 +34,53 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
                 
             }
 
+            result(true)
+        } else {
+            result("mainWindow not found") // should return error or throw exception here.
+        }
+        
+    case "setMinWindowSize":
+        if let window = NSApplication.shared.mainWindow {
+            if let width: Float = (call.arguments as? [String: Any])?["width"] as? Float,
+                let height: Float = (call.arguments as? [String: Any])?["height"] as? Float
+                {
+                    window.minSize = CGSize(width:CGFloat(width),height:CGFloat(height));
+                
+            }
+
+            result(true)
+        } else {
+            result("mainWindow not found") // should return error or throw exception here.
+        }
+        
+    case "setMaxWindowSize":
+        if let window = NSApplication.shared.mainWindow {
+            if let width: Float = (call.arguments as? [String: Any])?["width"] as? Float,
+                let height: Float = (call.arguments as? [String: Any])?["height"] as? Float
+                {
+                    if (width == 0 || height == 0) {
+                        window.maxSize = CGSize(width:CGFloat(Float.greatestFiniteMagnitude), height:CGFloat(Float.greatestFiniteMagnitude))
+                    } else {
+                        window.maxSize = CGSize(width:CGFloat(width), height:CGFloat(height));
+                    }
+
+            }
+            result(true)
+        } else {
+            result("mainWindow not found") // should return error or throw exception here.
+        }
+        
+    case "resetMaxWindowSize":
+        if let window = NSApplication.shared.mainWindow {
+            window.maxSize = CGSize(width:CGFloat(Float.greatestFiniteMagnitude), height:CGFloat(Float.greatestFiniteMagnitude))
+            result(true)
+        } else {
+            result("mainWindow not found") // should return error or throw exception here.
+        }
+
+    case "toggleFullScreen":
+        if let window = NSApplication.shared.mainWindow {
+            window.toggleFullScreen(nil);
             result(true)
         } else {
             result("mainWindow not found") // should return error or throw exception here.

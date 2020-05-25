@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:desktop_window/desktop_window.dart';
 
 void main() {
@@ -14,37 +13,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  String _windowSize = 'Unknown';
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await DesktopWindow.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
+  Future _getWindowSize() async {
+    var size = await DesktopWindow.getWindowSize();
     setState(() {
-      _platformVersion = platformVersion;
+      _windowSize = '${size.width} x ${size.height}';
     });
-  }
-
-  Future testWindowFunctions() async {
-    print(await DesktopWindow.getWindowSize());
-    print(await DesktopWindow.setWindowSize(Size(500, 500)));
   }
 
   @override
@@ -53,16 +33,56 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('desktop_window example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await testWindowFunctions();
-          },
-          child: Icon(Icons.tag_faces),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('$_windowSize\n'),
+              RaisedButton(
+                onPressed: _getWindowSize,
+                child: Text("getWindowSize"),
+              ),
+              RaisedButton(
+                onPressed: () async {
+                  await DesktopWindow.setMinWindowSize(Size(300, 400));
+                },
+                child: Text("setMinWindowSize(300,400)"),
+              ),
+              RaisedButton(
+                onPressed: () async {
+                  await DesktopWindow.setMaxWindowSize(Size(800, 800));
+                },
+                child: Text("setMaxWindowSize(800,800)"),
+              ),
+              RaisedButton(
+                onPressed: () async {
+                  var size = await DesktopWindow.getWindowSize();
+                  await DesktopWindow.setWindowSize(
+                      Size(size.width - 50, size.height - 50));
+                  await _getWindowSize();
+                },
+                child: Text("Smaller"),
+              ),
+              RaisedButton(
+                onPressed: () async {
+                  var size = await DesktopWindow.getWindowSize();
+                  await DesktopWindow.setWindowSize(
+                      Size(size.width + 50, size.height + 50));
+                  await _getWindowSize();
+                },
+                child: Text("Larger"),
+              ),
+              RaisedButton(
+                onPressed: () async {
+                  await DesktopWindow.resetMaxWindowSize();
+                  await DesktopWindow.toggleFullScreen();
+                },
+                child: Text("toggleFullScreen"),
+              ),
+            ],
+          ),
         ),
       ),
     );
