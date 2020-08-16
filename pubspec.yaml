@@ -26,3 +26,6 @@ flutter:
     platforms:
       macos:
         pluginClass: DesktopWindowPlugin
+      linux:
+        pluginClass: DesktopWindowPlugin
+

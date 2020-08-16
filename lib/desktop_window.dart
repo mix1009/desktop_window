@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -35,5 +36,15 @@ class DesktopWindow {
 
   static Future toggleFullScreen() async {
     return await _channel.invokeMethod('toggleFullScreen');
+  }
+
+  static Future setFullScreen(bool fullscreen) async {
+    return await _channel.invokeMethod('setFullScreen', fullscreen);
+  }
+
+  static Future getFullScreen() async {
+    final fullscreen = await _channel.invokeMethod('getFullScreen');
+    if (fullscreen is bool) return fullscreen;
+    throw fullscreen;
   }
 }
