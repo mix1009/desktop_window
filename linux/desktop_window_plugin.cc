@@ -136,7 +136,9 @@ static void desktop_window_plugin_handle_method_call(
     }
   }
   else if(strcmp(method, "setFullScreen") == 0) {
-    bool fullscreen = fl_value_get_bool(fl_method_call_get_args(method_call));
+    bool fullscreen = fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("fullscreen")));
+
+    // bool fullscreen = fl_value_get_bool(fl_method_call_get_args(method_call));
 
     if (gtk_widget_is_toplevel(self->widget))
     {

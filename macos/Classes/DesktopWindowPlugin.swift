@@ -85,6 +85,34 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
         } else {
             result("mainWindow not found") // should return error or throw exception here.
         }
+    case "setFullScreen":
+        if let bFullScreen: Bool = (call.arguments as? [String: Any])?["fullscreen"] as? Bool {
+
+            if let window = NSApplication.shared.mainWindow {
+                if (bFullScreen) {
+                    if (!window.styleMask.contains(.fullScreen)) {
+                        window.toggleFullScreen(nil);
+                    }
+                } else {
+                    if (window.styleMask.contains(.fullScreen)) {
+                        window.toggleFullScreen(nil);
+                    }
+                }
+                result(true)
+            } else {
+                result("mainWindow not found") // should return error or throw exception here.
+            }
+        }
+    case "getFullScreen":
+        if let window = NSApplication.shared.mainWindow {
+            if (window.styleMask.contains(.fullScreen)) {
+                result(true)
+            } else {
+                result(false)
+            }
+        } else {
+            result("mainWindow not found") // should return error or throw exception here.
+        }
 
     default:
       result(FlutterMethodNotImplemented)

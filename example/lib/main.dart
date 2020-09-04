@@ -41,45 +41,76 @@ class _MyAppState extends State<MyApp> {
             children: [
               Text('$_windowSize\n'),
               RaisedButton(
-                onPressed: _getWindowSize,
                 child: Text("getWindowSize"),
+                onPressed: _getWindowSize,
               ),
               RaisedButton(
+                child: Text("setMinWindowSize(300,400)"),
                 onPressed: () async {
                   await DesktopWindow.setMinWindowSize(Size(300, 400));
                 },
-                child: Text("setMinWindowSize(300,400)"),
               ),
               RaisedButton(
+                child: Text("setMaxWindowSize(800,800)"),
                 onPressed: () async {
                   await DesktopWindow.setMaxWindowSize(Size(800, 800));
                 },
-                child: Text("setMaxWindowSize(800,800)"),
               ),
-              RaisedButton(
-                onPressed: () async {
-                  var size = await DesktopWindow.getWindowSize();
-                  await DesktopWindow.setWindowSize(
-                      Size(size.width - 50, size.height - 50));
-                  await _getWindowSize();
-                },
-                child: Text("Smaller"),
+              Wrap(
+                children: [
+                  RaisedButton(
+                    child: Text("Smaller"),
+                    onPressed: () async {
+                      var size = await DesktopWindow.getWindowSize();
+                      await DesktopWindow.setWindowSize(
+                          Size(size.width - 50, size.height - 50));
+                      await _getWindowSize();
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("Larger"),
+                    onPressed: () async {
+                      var size = await DesktopWindow.getWindowSize();
+                      await DesktopWindow.setWindowSize(
+                          Size(size.width + 50, size.height + 50));
+                      await _getWindowSize();
+                    },
+                  ),
+                ],
               ),
-              RaisedButton(
-                onPressed: () async {
-                  var size = await DesktopWindow.getWindowSize();
-                  await DesktopWindow.setWindowSize(
-                      Size(size.width + 50, size.height + 50));
-                  await _getWindowSize();
-                },
-                child: Text("Larger"),
-              ),
-              RaisedButton(
-                onPressed: () async {
-                  await DesktopWindow.resetMaxWindowSize();
-                  await DesktopWindow.toggleFullScreen();
-                },
-                child: Text("toggleFullScreen"),
+              Wrap(
+                children: [
+                  RaisedButton(
+                    child: Text("toggleFullScreen"),
+                    onPressed: () async {
+                      await DesktopWindow.resetMaxWindowSize();
+                      await DesktopWindow.toggleFullScreen();
+                    },
+                  ),
+                  Builder(builder: (ctx) {
+                    return RaisedButton(
+                      child: Text("getFullScreen"),
+                      onPressed: () async {
+                        final isFullScreen =
+                            await DesktopWindow.getFullScreen();
+                        Scaffold.of(ctx).showSnackBar(SnackBar(
+                            content: Text('getFullScreen = $isFullScreen')));
+                      },
+                    );
+                  }),
+                  RaisedButton(
+                    child: Text("setFullScreen(true)"),
+                    onPressed: () async {
+                      await DesktopWindow.setFullScreen(true);
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("setFullScreen(false)"),
+                    onPressed: () async {
+                      await DesktopWindow.setFullScreen(false);
+                    },
+                  ),
+                ],
               ),
             ],
           ),

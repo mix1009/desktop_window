@@ -39,7 +39,8 @@ class DesktopWindow {
   }
 
   static Future setFullScreen(bool fullscreen) async {
-    return await _channel.invokeMethod('setFullScreen', fullscreen);
+    return await _channel
+        .invokeMethod('setFullScreen', {'fullscreen': fullscreen});
   }
 
   static Future getFullScreen() async {
