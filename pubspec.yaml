@@ -28,4 +28,7 @@ flutter:
         pluginClass: DesktopWindowPlugin
       linux:
         pluginClass: DesktopWindowPlugin
+      windows:
+        pluginClass: DesktopWindowPlugin
+
 
