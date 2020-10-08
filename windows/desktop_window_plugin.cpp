@@ -113,22 +113,108 @@ void DesktopWindowPlugin::HandleMethodCall(
     SetWindowPos(handle, HWND_TOP, 0, 0, iWidth, iHeight, SWP_NOMOVE);
 
     result->Success(flutter::EncodableValue(true));
-  } else if (method_call.method_name().compare("setFullScreen") == 0) {
 
+  } else if (method_call.method_name().compare("setFullScreen") == 0) {
     const auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
     bool fullscreen = false;
     if (arguments) {
       auto fs_it = arguments->find(flutter::EncodableValue("fullscreen"));
       if (fs_it != arguments->end()) {
-        fullscreen = std::get<double>(fs_it->second);
+        fullscreen = std::get<bool>(fs_it->second);
       }   
     } 
     HWND handle = GetActiveWindow();
+
+    WINDOWPLACEMENT placement;
+
+    GetWindowPlacement(handle, &placement);
+
     if (fullscreen) {
-      ShowWindow(handle, SW_MAXIMIZE);
+      placement.showCmd = SW_MAXIMIZE;
+      SetWindowPlacement(handle, &placement);
     } else {
-      ShowWindow(handle, SW_SHOWNORMAL);
+      placement.showCmd = SW_NORMAL;
+      SetWindowPlacement(handle, &placement);
     }
+    result->Success(flutter::EncodableValue(true));
+
+  } else if (method_call.method_name().compare("getFullScreen") == 0) {
+    HWND handle = GetActiveWindow();
+
+    WINDOWPLACEMENT placement;
+    GetWindowPlacement(handle, &placement);
+
+    if (placement.showCmd == SW_MAXIMIZE) {
+      result->Success(flutter::EncodableValue(true));
+    } else {
+      result->Success(flutter::EncodableValue(false));
+    }
+
+  } else if (method_call.method_name().compare("toggleFullScreen") == 0) {
+    HWND handle = GetActiveWindow();
+
+    WINDOWPLACEMENT placement;
+    GetWindowPlacement(handle, &placement);
+
+    if (placement.showCmd == SW_MAXIMIZE) {
+      placement.showCmd = SW_NORMAL;
+      SetWindowPlacement(handle, &placement);
+    } else {
+      placement.showCmd = SW_MAXIMIZE;
+      SetWindowPlacement(handle, &placement);
+    }
+    result->Success(flutter::EncodableValue(true));
+
+  } else if (method_call.method_name().compare("resetMaxWindowSize") == 0) {
+
+    // XXX not implemented.
+
+    result->Success(flutter::EncodableValue(true));
+
+  } else if (method_call.method_name().compare("setMinWindowSize") == 0) {
+    double width = 0;
+    double height = 0;
+    const auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+    if (arguments) {
+      auto width_it = arguments->find(flutter::EncodableValue("width"));
+      if (width_it != arguments->end()) {
+        width = std::get<double>(width_it->second);
+      }    
+      auto height_it = arguments->find(flutter::EncodableValue("height"));
+      if (height_it != arguments->end()) {
+        height = std::get<double>(height_it->second);
+      }
+    }
+    if (width == 0 || height == 0) {
+      result->Error("argument_error", "width or height not provided");
+      return;
+    }
+
+    // XXX not implemented.
+
+    result->Success(flutter::EncodableValue(true));
+
+  } else if (method_call.method_name().compare("setMaxWindowSize") == 0) {
+    double width = 0;
+    double height = 0;
+    const auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+    if (arguments) {
+      auto width_it = arguments->find(flutter::EncodableValue("width"));
+      if (width_it != arguments->end()) {
+        width = std::get<double>(width_it->second);
+      }    
+      auto height_it = arguments->find(flutter::EncodableValue("height"));
+      if (height_it != arguments->end()) {
+        height = std::get<double>(height_it->second);
+      }
+    }
+    if (width == 0 || height == 0) {
+      result->Error("argument_error", "width or height not provided");
+      return;
+    }
+
+    // XXX not implemented.
+
     result->Success(flutter::EncodableValue(true));
 
   } else {
