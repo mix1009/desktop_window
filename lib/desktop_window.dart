@@ -1,5 +1,4 @@
 import 'dart:async';
-// import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -8,19 +7,6 @@ import 'package:flutter/material.dart';
 class DesktopWindow {
   static const MethodChannel _channel =
       const MethodChannel('desktop_window');
-
-  static Future<String> getPlatformVersion() async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
-// }
-
-// class DesktopWindow {
-//   static const MethodChannel _channel = const MethodChannel('desktop_window');
-
-//   static Future<String> getPlatformVersion() async {
-//     return await _channel.invokeMethod('getPlatformVersion');
-//   }
 
   static Future<Size> getWindowSize() async {
     final arr = await _channel.invokeMethod('getWindowSize');
