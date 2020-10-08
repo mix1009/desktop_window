@@ -94,7 +94,8 @@ class _MyAppState extends State<MyApp> {
                         final isFullScreen =
                             await DesktopWindow.getFullScreen();
                         Scaffold.of(ctx).showSnackBar(SnackBar(
-                            content: Text('getFullScreen = $isFullScreen')));
+                            content: Text('getFullScreen = $isFullScreen'),
+                            duration: Duration(seconds: 1)));
                       },
                     );
                   }),
