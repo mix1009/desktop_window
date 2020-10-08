@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:desktop_window/desktop_window.dart';
+// import 'package:desktop_window/desktop_window.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('desktop_window');
@@ -17,7 +17,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await DesktopWindow.platformVersion, '42');
-  });
+  // test('getPlatformVersion', () async {
+  //   expect(await DesktopWindow.platformVersion, '42');
+  // });
 }

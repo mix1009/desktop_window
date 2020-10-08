@@ -1,5 +1,9 @@
+## 0.3.0 - 2020/10/08
+* add Windows support
+
+
 ## 0.2.0 - 2020/09/04
-* add linux support
+* add Linux support
 * add getFullScreen and setFullScreen functions
 
 

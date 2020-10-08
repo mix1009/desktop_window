@@ -1,6 +1,6 @@
 name: desktop_window
-description: Flutter desktop plugin(macOS only) to get and change window size.
-version: 0.2.0
+description: Flutter desktop plugin(macOS/Linux/Windows) to get and change window size.
+version: 0.3.0
 #author: ChunKoo Park <mix1009@gmail.com>
 homepage: https://github.com/mix1009/desktop_window
 

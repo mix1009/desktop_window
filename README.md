@@ -1,6 +1,6 @@
 # desktop_window
 
-Flutter plugin for Flutter desktop(macOS/linux) to change window size.
+Flutter plugin for Flutter desktop(macOS/Linux/Windows) to change window size.
 
 
 ## Usage
