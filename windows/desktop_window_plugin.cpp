@@ -16,6 +16,21 @@
 
 namespace {
 
+LRESULT CALLBACK CallWndProc(
+	__in  int nCode,
+	__in  WPARAM wParam,
+	__in  LPARAM lParam
+	);
+
+LRESULT CALLBACK MyWndProc(HWND hWnd,UINT iMessage,WPARAM wParam,LPARAM lParam);
+
+WNDPROC oldProc;
+
+int maxWidth = 0;
+int maxHeight = 0;
+int minWidth = 0;
+int minHeight = 0;
+
 class DesktopWindowPlugin : public flutter::Plugin {
  public:
   static void RegisterWithRegistrar(flutter::PluginRegistrarWindows *registrar);
@@ -47,6 +62,15 @@ void DesktopWindowPlugin::RegisterWithRegistrar(
       });
 
   registrar->AddPlugin(std::move(plugin));
+
+  // failed attempt using SetWindowHookEx
+  // SetWindowsHookEx(WH_CALLWNDPROC, CallWndProc, (HINSTANCE) NULL, GetCurrentThreadId());
+  // SetWindowsHookEx(WH_CALLWNDPROCRET, CallWndProc, (HINSTANCE) NULL, GetCurrentThreadId());
+
+  HWND handle = GetActiveWindow();
+  oldProc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(handle, GWLP_WNDPROC));
+  SetWindowLongPtr(handle, GWLP_WNDPROC, (LONG_PTR)MyWndProc);
+  
 }
 
 DesktopWindowPlugin::DesktopWindowPlugin() {}
@@ -167,7 +191,8 @@ void DesktopWindowPlugin::HandleMethodCall(
 
   } else if (method_call.method_name().compare("resetMaxWindowSize") == 0) {
 
-    // XXX not implemented.
+    maxWidth = 0;
+    maxHeight = 0;
 
     result->Success(flutter::EncodableValue(true));
 
@@ -190,7 +215,8 @@ void DesktopWindowPlugin::HandleMethodCall(
       return;
     }
 
-    // XXX not implemented.
+    minWidth = int(width+0.5);
+    minHeight = int(height+0.5);
 
     result->Success(flutter::EncodableValue(true));
 
@@ -213,7 +239,8 @@ void DesktopWindowPlugin::HandleMethodCall(
       return;
     }
 
-    // XXX not implemented.
+    maxWidth = int(width+0.5);
+    maxHeight = int(height+0.5);
 
     result->Success(flutter::EncodableValue(true));
 
@@ -222,7 +249,71 @@ void DesktopWindowPlugin::HandleMethodCall(
   }
 }
 
+
+// LRESULT CALLBACK CallWndProc(
+// 	__in  int nCode,
+// 	__in  WPARAM wParam,
+// 	__in  LPARAM lParam
+// 	) {
+
+// 	if(nCode == HC_ACTION) {
+// 		CWPSTRUCT *TempCWPSTRUCT = (CWPSTRUCT*)lParam;
+// 		switch(TempCWPSTRUCT->message) {
+// 		case WM_GETMINMAXINFO:
+//     {
+//       OutputDebugString(L"WM_GETMINMAXINFO called");
+
+//       MINMAXINFO* mmi = (MINMAXINFO*)TempCWPSTRUCT->lParam;
+//       mmi->ptMinTrackSize.x = 800;
+//       mmi->ptMinTrackSize.y = 800;
+//       mmi->ptMaxTrackSize.x = 1300;
+//       mmi->ptMaxTrackSize.y = 1300;
+//       mmi->ptMaxSize.x = 1300;
+//       mmi->ptMaxSize.y = 1300;
+
+//       break;
+//     }
+// 		default:
+//     {
+//       break;
+//     }
+// 		}
+// 		return 0;
+// 	}
+// 	else
+// 	{
+// 		return CallNextHookEx(NULL, nCode, wParam, lParam);
+// 	}
+// }
+
+LRESULT CALLBACK MyWndProc(HWND hWnd,UINT iMessage,WPARAM wParam,LPARAM lParam) {
+  if(iMessage == WM_GETMINMAXINFO) {
+    // OutputDebugString(L"WM_GETMINMAXINFO called");
+
+    bool changed = false;
+
+    if (maxWidth != 0 && maxHeight != 0) {
+      ((MINMAXINFO *)lParam)->ptMaxTrackSize.x = maxWidth;
+      ((MINMAXINFO *)lParam)->ptMaxTrackSize.y = maxHeight;
+      changed = true;
+    }
+    if (minWidth != 0 && minHeight != 0) {
+      ((MINMAXINFO *)lParam)->ptMinTrackSize.x = minWidth;
+      ((MINMAXINFO *)lParam)->ptMinTrackSize.y = minHeight;
+      changed = true;
+    }
+    if (changed) {
+      return FALSE;
+    }
+  }
+
+  return oldProc(hWnd, iMessage, wParam, lParam);
+}
+
+
 }  // namespace
+
+
 
 void DesktopWindowPluginRegisterWithRegistrar(
     FlutterDesktopPluginRegistrarRef registrar) {
