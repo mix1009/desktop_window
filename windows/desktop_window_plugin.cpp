@@ -24,6 +24,9 @@ int maxHeight = 0;
 int minWidth = 0;
 int minHeight = 0;
 
+long windowStyle = NULL;
+const long BORDERS = WS_BORDER | WS_DLGFRAME | WS_CAPTION;
+
 class DesktopWindowPlugin : public flutter::Plugin {
  public:
   static void RegisterWithRegistrar(flutter::PluginRegistrarWindows *registrar);
@@ -176,6 +179,62 @@ void DesktopWindowPlugin::HandleMethodCall(
       placement.showCmd = SW_MAXIMIZE;
       SetWindowPlacement(handle, &placement);
     }
+    result->Success(flutter::EncodableValue(true));
+
+  } else if (method_call.method_name().compare("setBorderless") == 0) {
+    const auto* arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+    bool borderless = false;
+    if (arguments) {
+      auto fs_it = arguments->find(flutter::EncodableValue("borderless"));
+      if (fs_it != arguments->end()) {
+        borderless = std::get<bool>(fs_it->second);
+      }   
+    } 
+    HWND handle = GetActiveWindow();
+
+    WINDOWPLACEMENT placement;
+    GetWindowPlacement(handle, &placement);
+
+    if(windowStyle == NULL){
+      windowStyle = GetWindowLong(handle,GWL_STYLE);
+    } 
+    if(borderless) {
+      long style = windowStyle & ~BORDERS;
+      SetWindowLong(handle, GWL_STYLE, &style);
+    }
+    else {
+      SetWindowLong(handle, GWL_STYLE, &windowStyle);
+    }
+    SetWindowPlacement(handle, &placement);
+
+    result->Success(flutter::EncodableValue(true));
+
+  } else if (method_call.method_name().compare("getBorderless") == 0) {
+    HWND handle = GetActiveWindow();
+
+    long currentWindowStyle = GetWindowLong(handle,GWL_STYLE);
+    result->Success(flutter::EncodableValue((currentWindowStyle & BORDERS) > 0));
+    
+
+  } else if (method_call.method_name().compare("toggleBorderless") == 0) {
+    HWND handle = GetActiveWindow();
+
+    WINDOWPLACEMENT placement;
+    GetWindowPlacement(handle, &placement);
+
+    long currentWindowStyle = GetWindowLong(handle,GWL_STYLE);
+    if(windowStyle == NULL){
+      windowStyle = currentWindowStyle;
+    }
+
+    if(currentWindowStyle & BORDERS) {
+      long style = windowStyle & ~BORDERS;
+      SetWindowLong(handle, GWL_STYLE, &style);
+    }
+    else {
+      SetWindowLong(handle, GWL_STYLE, &windowStyle);
+    }
+    SetWindowPlacement(handle, &placement);
     result->Success(flutter::EncodableValue(true));
 
   } else if (method_call.method_name().compare("resetMaxWindowSize") == 0) {
