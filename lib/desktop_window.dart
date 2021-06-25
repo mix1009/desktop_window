@@ -60,6 +60,6 @@ class DesktopWindow {
 
   static Future setBorderless(bool borderless) async {
     return await _channel
-        .invokeMethod('setFullScreen', {'borderless': borderless});
+        .invokeMethod('setBorderless', {'borderless': borderless});
   }
 }
