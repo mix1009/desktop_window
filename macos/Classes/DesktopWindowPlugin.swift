@@ -105,14 +105,43 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
         }
     case "getFullScreen":
         if let window = NSApplication.shared.mainWindow {
-            if (window.styleMask.contains(.fullScreen)) {
-                result(true)
-            } else {
-                result(false)
-            }
+            result(window.styleMask.contains(.fullScreen))
         } else {
             result("mainWindow not found") // should return error or throw exception here.
         }
+    case "toggleBorderless":
+        if let window = NSApplication.shared.mainWindow {
+            if(window.styleMask.contains(.borderless)) {
+                window.styleMask.remove(.borderless)
+            } else {
+                window.styleMask.insert(.borderless)
+            }
+            result(true)
+        } else {
+            result("mainWindow not found") // should return error or throw exception here.
+        }
+    case "setBorderless":
+        if let bBorderLess: Bool = (call.arguments as? [String: Any])?["borderless"] as? Bool {
+            if let window = NSApplication.shared.mainWindow {
+                if (window.styleMask.contains(.borderless) != bBorderLess) {
+                    if (window.styleMask.contains(.borderless)) {
+                        window.styleMask.remove(.borderless)
+                    } else {
+                        window.styleMask.insert(.borderless)
+                    }
+                }
+                result(true)
+            } else {
+                result("mainWindow not found") // should return error or throw exception here.
+            }
+        }
+    case "getBorderless":
+        if let window = NSApplication.shared.mainWindow {
+            result(window.styleMask.contains(.borderless))
+        } else {
+            result("mainWindow not found") // should return error or throw exception here.
+        }
+        
 
     default:
       result(FlutterMethodNotImplemented)
