@@ -168,7 +168,7 @@ static void desktop_window_plugin_handle_method_call(
     if(gtk_widget_is_toplevel(self->widget))
     {
       bool isDecorated = (bool) gtk_window_get_decorated((GtkWindow*) self->widget);
-      response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(isDecorated)));
+      response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(!isDecorated)));
     }
     else
     {
@@ -176,7 +176,7 @@ static void desktop_window_plugin_handle_method_call(
     }
   }
   else if(strcmp(method, "setBorderless") == 0){
-    bool decorated = fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("borderless")));
+    bool decorated = !fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("borderless")));
 
     if(gtk_widget_is_toplevel(self->widget))
     {
