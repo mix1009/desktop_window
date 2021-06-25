@@ -25,15 +25,7 @@ static void desktop_window_plugin_handle_method_call(
 
   const gchar *method = fl_method_call_get_name(method_call);
 
-  if (strcmp(method, "getPlatformVersion") == 0)
-  {
-    struct utsname uname_data = {};
-    uname(&uname_data);
-    g_autofree gchar *version = g_strdup_printf("Linux %s", uname_data.version);
-    g_autoptr(FlValue) result = fl_value_new_string(version);
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
-  }
-  else if (!gtk_widget_is_toplevel(self->widget))
+  if (!gtk_widget_is_toplevel(self->widget))
   {
     response = FL_METHOD_RESPONSE(fl_method_error_response_new("MAINWINDOW_NOT_FOUND", "GtkWindow not found", fl_value_new_null()));
   }
@@ -46,7 +38,7 @@ static void desktop_window_plugin_handle_method_call(
 
     g_autoptr(FlValue) list = fl_value_new_list();
     fl_value_append_take(list, fl_value_new_float((float)width));
-    fl_value_append_take(list, fl_value_new_float((float)width));
+    fl_value_append_take(list, fl_value_new_float((float)height));
 
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(list));
   }
