@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
-
 class DesktopWindow {
-  static const MethodChannel _channel =
-      const MethodChannel('desktop_window');
+  static const MethodChannel _channel = const MethodChannel('desktop_window');
 
   static Future<Size> getWindowSize() async {
     final arr = await _channel.invokeMethod('getWindowSize');
@@ -48,5 +46,11 @@ class DesktopWindow {
     final fullscreen = await _channel.invokeMethod('getFullScreen');
     if (fullscreen is bool) return fullscreen;
     throw fullscreen;
+  }
+
+  static Future getBorderless() async {
+    final borderless = await _channel.invokeMethod('getBorderless');
+    if (borderless is bool) return borderless;
+    throw borderless;
   }
 }

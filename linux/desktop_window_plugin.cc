@@ -164,6 +164,43 @@ static void desktop_window_plugin_handle_method_call(
       response = FL_METHOD_RESPONSE(fl_method_error_response_new("MAINWINDOW_NOT_FOUND", "GtkWindow not found", fl_value_new_null()));
     }
   }
+  else if(strcmp(method, "getBorderless")){
+    if(gtk_widget_is_toplevel(self->widget))
+    {
+      bool isDecorated = (bool) gtk_window_get_decorated((GtkWindow*) self->widget);
+      response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(isDecorated)));
+    }
+    else
+    {
+      response = FL_METHOD_RESPONSE(fl_method_error_response_new("MAINWINDOW_NOT_FOUND", "GtkWindow not found", fl_value_new_null()));
+    }
+  }
+  else if(strcmp(method, "setBorderless")){
+    bool decorated = fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("borderless")));
+
+    if(gtk_widget_is_toplevel(self->widget))
+    {
+      gtk_window_set_decorated((GtkWindow*) self->widget, decorated);
+      response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    }
+    else
+    {
+      response = FL_METHOD_RESPONSE(fl_method_error_response_new("MAINWINDOW_NOT_FOUND", "GtkWindow not found", fl_value_new_null()));
+    }
+  }
+  else if(strcmp(method, "toggleBorderless")){
+    if(gtk_widget_is_toplevel(self->widget))
+    {
+      bool isDecorated = (bool) gtk_window_get_decorated((GtkWindow*) self->widget);
+      gtk_window_set_decorated((GtkWindow*) self->widget, !isDecorated);
+      response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    }
+    else
+    {
+      response = FL_METHOD_RESPONSE(fl_method_error_response_new("MAINWINDOW_NOT_FOUND", "GtkWindow not found", fl_value_new_null()));
+    }
+  }
+  
 
   if (response == nullptr)
     response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
