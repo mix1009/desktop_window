@@ -9,142 +9,111 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    switch call.method {
-        
-    case "getWindowSize":
-        if let window = NSApplication.shared.mainWindow {
-            let width = window.frame.size.width;
-            let height = window.frame.size.height;
-            result([width, height])
-        } else {
-            result("mainWindow not found") // should return error or throw exception here.
-        }
-            
-    case "setWindowSize":
-        if let window = NSApplication.shared.mainWindow {
-            if let width: Float = (call.arguments as? [String: Any])?["width"] as? Float,
-                let height: Float = (call.arguments as? [String: Any])?["height"] as? Float
-                {
-                    var rect = window.frame;
-                    rect.origin.y += (rect.size.height - CGFloat(height));
-                    rect.size.width = CGFloat(width);
-                    rect.size.height = CGFloat(height);
+    if let window = NSApplication.shared.mainWindow {
+      switch call.method {
 
-                    window.setFrame(rect, display: true)
-                
-            }
+      case "getWindowSize":
+        let width = window.frame.size.width
+        let height = window.frame.size.height
+        result([width, height])
 
-            result(true)
-        } else {
-            result("mainWindow not found") // should return error or throw exception here.
-        }
-        
-    case "setMinWindowSize":
-        if let window = NSApplication.shared.mainWindow {
-            if let width: Float = (call.arguments as? [String: Any])?["width"] as? Float,
-                let height: Float = (call.arguments as? [String: Any])?["height"] as? Float
-                {
-                    window.minSize = CGSize(width:CGFloat(width),height:CGFloat(height));
-                
-            }
+      case "setWindowSize":
+        if let width: Float = (call.arguments as? [String: Any])?["width"] as? Float,
+          let height: Float = (call.arguments as? [String: Any])?["height"] as? Float
+        {
+          var rect = window.frame
+          rect.origin.y += (rect.size.height - CGFloat(height))
+          rect.size.width = CGFloat(width)
+          rect.size.height = CGFloat(height)
 
-            result(true)
-        } else {
-            result("mainWindow not found") // should return error or throw exception here.
-        }
-        
-    case "setMaxWindowSize":
-        if let window = NSApplication.shared.mainWindow {
-            if let width: Float = (call.arguments as? [String: Any])?["width"] as? Float,
-                let height: Float = (call.arguments as? [String: Any])?["height"] as? Float
-                {
-                    if (width == 0 || height == 0) {
-                        window.maxSize = CGSize(width:CGFloat(Float.greatestFiniteMagnitude), height:CGFloat(Float.greatestFiniteMagnitude))
-                    } else {
-                        window.maxSize = CGSize(width:CGFloat(width), height:CGFloat(height));
-                    }
+          window.setFrame(rect, display: true)
 
-            }
-            result(true)
-        } else {
-            result("mainWindow not found") // should return error or throw exception here.
-        }
-        
-    case "resetMaxWindowSize":
-        if let window = NSApplication.shared.mainWindow {
-            window.maxSize = CGSize(width:CGFloat(Float.greatestFiniteMagnitude), height:CGFloat(Float.greatestFiniteMagnitude))
-            result(true)
-        } else {
-            result("mainWindow not found") // should return error or throw exception here.
         }
 
-    case "toggleFullScreen":
-        if let window = NSApplication.shared.mainWindow {
-            window.toggleFullScreen(nil);
-            result(true)
-        } else {
-            result("mainWindow not found") // should return error or throw exception here.
+        result(true)
+
+      case "setMinWindowSize":
+        if let width: Float = (call.arguments as? [String: Any])?["width"] as? Float,
+          let height: Float = (call.arguments as? [String: Any])?["height"] as? Float
+        {
+          window.minSize = CGSize(width: CGFloat(width), height: CGFloat(height))
+
         }
-    case "setFullScreen":
+
+        result(true)
+
+      case "setMaxWindowSize":
+        if let width: Float = (call.arguments as? [String: Any])?["width"] as? Float,
+          let height: Float = (call.arguments as? [String: Any])?["height"] as? Float
+        {
+          if width == 0 || height == 0 {
+            window.maxSize = CGSize(
+              width: CGFloat(Float.greatestFiniteMagnitude),
+              height: CGFloat(Float.greatestFiniteMagnitude))
+          } else {
+            window.maxSize = CGSize(width: CGFloat(width), height: CGFloat(height))
+          }
+
+        }
+        result(true)
+
+      case "resetMaxWindowSize":
+        window.maxSize = CGSize(
+          width: CGFloat(Float.greatestFiniteMagnitude),
+          height: CGFloat(Float.greatestFiniteMagnitude))
+
+        result(true)
+
+      case "toggleFullScreen":
+        window.toggleFullScreen(nil)
+        result(true)
+
+      case "setFullScreen":
         if let bFullScreen: Bool = (call.arguments as? [String: Any])?["fullscreen"] as? Bool {
 
-            if let window = NSApplication.shared.mainWindow {
-                if (bFullScreen) {
-                    if (!window.styleMask.contains(.fullScreen)) {
-                        window.toggleFullScreen(nil);
-                    }
-                } else {
-                    if (window.styleMask.contains(.fullScreen)) {
-                        window.toggleFullScreen(nil);
-                    }
-                }
-                result(true)
-            } else {
-                result("mainWindow not found") // should return error or throw exception here.
+          if bFullScreen {
+            if !window.styleMask.contains(.fullScreen) {
+              window.toggleFullScreen(nil)
             }
-        }
-    case "getFullScreen":
-        if let window = NSApplication.shared.mainWindow {
-            result(window.styleMask.contains(.fullScreen))
-        } else {
-            result("mainWindow not found") // should return error or throw exception here.
-        }
-    case "toggleBorderless":
-        if let window = NSApplication.shared.mainWindow {
-            if(window.styleMask.contains(.borderless)) {
-                window.styleMask.remove(.borderless)
-            } else {
-                window.styleMask.insert(.borderless)
+          } else {
+            if window.styleMask.contains(.fullScreen) {
+              window.toggleFullScreen(nil)
             }
-            result(true)
-        } else {
-            result("mainWindow not found") // should return error or throw exception here.
+          }
+          result(true)
         }
-    case "setBorderless":
-        if let bBorderLess: Bool = (call.arguments as? [String: Any])?["borderless"] as? Bool {
-            if let window = NSApplication.shared.mainWindow {
-                if (window.styleMask.contains(.borderless) != bBorderLess) {
-                    if (window.styleMask.contains(.borderless)) {
-                        window.styleMask.remove(.borderless)
-                    } else {
-                        window.styleMask.insert(.borderless)
-                    }
-                }
-                result(true)
-            } else {
-                result("mainWindow not found") // should return error or throw exception here.
-            }
-        }
-    case "getBorderless":
-        if let window = NSApplication.shared.mainWindow {
-            result(window.styleMask.contains(.borderless))
-        } else {
-            result("mainWindow not found") // should return error or throw exception here.
-        }
-        
 
-    default:
-      result(FlutterMethodNotImplemented)
+      case "getFullScreen":
+        result(window.styleMask.contains(.fullScreen))
+
+      case "toggleBorderless":
+        if window.styleMask.contains(.borderless) {
+          window.styleMask.remove(.borderless)
+        } else {
+          window.styleMask.insert(.borderless)
+        }
+        result(true)
+
+      case "setBorderless":
+        if let bBorderLess: Bool = (call.arguments as? [String: Any])?["borderless"] as? Bool {
+          if window.styleMask.contains(.borderless) != bBorderLess {
+            if window.styleMask.contains(.borderless) {
+              window.styleMask.remove(.borderless)
+            } else {
+              window.styleMask.insert(.borderless)
+            }
+          }
+          result(true)
+        }
+
+      case "getBorderless":
+        result(window.styleMask.contains(.borderless))
+
+      default:
+        result(FlutterMethodNotImplemented)
+      }
+    } else {
+      result("mainWindow not found")  // should return error or throw exception here.
     }
   }
 }
