@@ -26,5 +26,5 @@ Future testWindowFunctions() async {
 
 ## Contributers
 
-Linux support has been contributed by Justus Fluegel (https://github.com/Technikkeller)
+Linux support has been contributed by Justus Fluegel (https://github.com/JustusFluegel)
 
