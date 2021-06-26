@@ -48,10 +48,10 @@ class DesktopWindow {
     throw fullscreen;
   }
 
-  static Future hasBorders() async {
-    final borderless = await _channel.invokeMethod('hasBorders');
-    if (borderless is bool) return borderless;
-    throw borderless;
+  static Future<bool> get hasBorders async {
+    final hasBorders = await _channel.invokeMethod('hasBorders');
+    if (hasBorders is bool) return hasBorders;
+    throw hasBorders;
   }
 
   static Future toggleBorders() async {
