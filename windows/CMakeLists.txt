@@ -6,6 +6,8 @@ set(PLUGIN_NAME "${PROJECT_NAME}_plugin")
 
 add_library(${PLUGIN_NAME} SHARED
   "${PLUGIN_NAME}.cpp"
+  "include/borders.cpp"
+  "include/method_call.cpp"
 )
 apply_standard_settings(${PLUGIN_NAME})
 set_target_properties(${PLUGIN_NAME} PROPERTIES
