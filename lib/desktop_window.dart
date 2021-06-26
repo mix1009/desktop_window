@@ -48,18 +48,17 @@ class DesktopWindow {
     throw fullscreen;
   }
 
-  static Future getBorderless() async {
-    final borderless = await _channel.invokeMethod('getBorderless');
+  static Future hasBorders() async {
+    final borderless = await _channel.invokeMethod('hasBorders');
     if (borderless is bool) return borderless;
     throw borderless;
   }
 
-  static Future toggleBorderless() async {
-    return await _channel.invokeMethod('toggleBorderless');
+  static Future toggleBorders() async {
+    return await _channel.invokeMethod('toggleBorders');
   }
 
-  static Future setBorderless(bool borderless) async {
-    return await _channel
-        .invokeMethod('setBorderless', {'borderless': borderless});
+  static Future setBorders(bool border) async {
+    return await _channel.invokeMethod('setBorders', {'border': border});
   }
 }

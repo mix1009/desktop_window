@@ -17,9 +17,9 @@ namespace DesktopWindowMethodCall
         void setFullscreen();
         void getFullscreen();
         void toggleFullscreen();
-        void setBorderless();
-        void getBorderless();
-        void toggleBorderless();
+        void setBorders();
+        void hasBorders();
+        void toggleBorders();
 
     private:
         const flutter::MethodCall<flutter::EncodableValue> &method_call;

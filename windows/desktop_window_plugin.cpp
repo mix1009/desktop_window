@@ -208,12 +208,12 @@ namespace
       methodCall.getFullscreen();
     else if (method_name == "toggleFullScreen")
       methodCall.toggleFullscreen();
-    else if (method_name == "setBorderless")
-      methodCall.setBorderless();
-    else if (method_name == "getBorderless")
-      methodCall.getBorderless();
-    else if (method_name == "toggleBorderless")
-      methodCall.toggleBorderless();
+    else if (method_name == "setBorders")
+      methodCall.setBorders();
+    else if (method_name == "hasBorders")
+      methodCall.hasBorders();
+    else if (method_name == "toggleBorders")
+      methodCall.toggleBorders();
     else if (method_name == "resetMaxWindowSize")
       resetMaxWindowSize(method_call, std::move(result));
     else if (method_name == "setMinWindowSize")

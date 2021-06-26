@@ -110,19 +110,19 @@ static void desktop_window_plugin_handle_method_call(
     bool isFullscreen = (bool)(gdk_window_get_state(gtk_widget_get_window(self->widget)) & GDK_WINDOW_STATE_FULLSCREEN);
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(isFullscreen)));
   }
-  else if (strcmp(method, "getBorderless") == 0)
+  else if (strcmp(method, "hasBorders") == 0)
   {
     bool isDecorated = (bool)gtk_window_get_decorated((GtkWindow *)self->widget);
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(!isDecorated)));
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(isDecorated)));
   }
-  else if (strcmp(method, "setBorderless") == 0)
+  else if (strcmp(method, "setBorders") == 0)
   {
-    bool decorated = !fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("borderless")));
+    bool decorated = fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("border")));
     gtk_window_set_decorated((GtkWindow *)self->widget, decorated);
 
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
   }
-  else if (strcmp(method, "toggleBorderless") == 0)
+  else if (strcmp(method, "toggleBorders") == 0)
   {
     bool isDecorated = (bool)gtk_window_get_decorated((GtkWindow *)self->widget);
     gtk_window_set_decorated((GtkWindow *)self->widget, !isDecorated);

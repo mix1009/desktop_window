@@ -86,7 +86,7 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
       case "getFullScreen":
         result(window.styleMask.contains(.fullScreen))
 
-      case "toggleBorderless":
+      case "toggleBorders":
         if window.styleMask.contains(.borderless) {
           window.styleMask.remove(.borderless)
         } else {
@@ -94,10 +94,10 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
         }
         result(true)
 
-      case "setBorderless":
-        if let bBorderLess: Bool = (call.arguments as? [String: Any])?["borderless"] as? Bool {
-          if window.styleMask.contains(.borderless) != bBorderLess {
-            if window.styleMask.contains(.borderless) {
+      case "setBorders":
+        if let bBorders: Bool = (call.arguments as? [String: Any])?["borders"] as? Bool {
+          if window.styleMask.contains(.borderless) == bBorders {
+            if bBorders {
               window.styleMask.remove(.borderless)
             } else {
               window.styleMask.insert(.borderless)
@@ -106,8 +106,8 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
           result(true)
         }
 
-      case "getBorderless":
-        result(window.styleMask.contains(.borderless))
+      case "hasBorders":
+        result(!window.styleMask.contains(.borderless))
 
       default:
         result(FlutterMethodNotImplemented)

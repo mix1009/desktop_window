@@ -71,33 +71,33 @@ namespace DesktopWindowMethodCall
         result->Success(flutter::EncodableValue(true));
     }
 
-    void MethodCall::setBorderless()
+    void MethodCall::setBorders()
     {
         const auto *arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
-        bool borderless = false;
+        bool border = false;
         if (arguments)
         {
-            auto fs_it = arguments->find(flutter::EncodableValue("borderless"));
+            auto fs_it = arguments->find(flutter::EncodableValue("border"));
             if (fs_it != arguments->end())
             {
-                borderless = std::get<bool>(fs_it->second);
+                border = std::get<bool>(fs_it->second);
             }
         }
 
         HWND hWnd = GetActiveWindow();
 
-        Borders::setBorders(&hWnd, !borderless, true);
+        Borders::setBorders(&hWnd, border, true);
 
         result->Success(flutter::EncodableValue(true));
     }
 
-    void MethodCall::getBorderless()
+    void MethodCall::hasBorders()
     {
         HWND hWnd = GetActiveWindow();
-        result->Success(flutter::EncodableValue(!Borders::hasBorders(&hWnd)));
+        result->Success(flutter::EncodableValue(Borders::hasBorders(&hWnd)));
     }
 
-    void MethodCall::toggleBorderless()
+    void MethodCall::toggleBorders()
     {
         HWND hWnd = GetActiveWindow();
         Borders::toggleBorders(&hWnd, true);
