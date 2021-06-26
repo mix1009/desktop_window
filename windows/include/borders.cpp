@@ -55,7 +55,7 @@ namespace Borders
         const long width = rect.right - rect.left + (2 * op * xBorder);
         const long height = rect.bottom - rect.top + (2 * op * yBorder) + (op * caption);
 
-        SetWindowPos(*hWnd, HWND_TOPMOST, xPos, yPos, width, height, SWP_SHOWWINDOW);
+        SetWindowPos(*hWnd, HWND_TOP, xPos, yPos, width, height, SWP_SHOWWINDOW);
     }
 
     void toggleBorders(HWND *hWnd, bool changeThickframe)

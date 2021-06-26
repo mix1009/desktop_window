@@ -14,35 +14,35 @@ class DesktopWindow {
     throw arr;
   }
 
-  static Future setWindowSize(Size size) async {
+  static Future<void> setWindowSize(Size size) async {
     return await _channel.invokeMethod(
         'setWindowSize', {'width': size.width, 'height': size.height});
   }
 
-  static Future setMinWindowSize(Size size) async {
+  static Future<void> setMinWindowSize(Size size) async {
     return await _channel.invokeMethod(
         'setMinWindowSize', {'width': size.width, 'height': size.height});
   }
 
-  static Future setMaxWindowSize(Size size) async {
+  static Future<void> setMaxWindowSize(Size size) async {
     return await _channel.invokeMethod(
         'setMaxWindowSize', {'width': size.width, 'height': size.height});
   }
 
-  static Future resetMaxWindowSize() async {
+  static Future<void> resetMaxWindowSize() async {
     return await _channel.invokeMethod('resetMaxWindowSize');
   }
 
-  static Future toggleFullScreen() async {
+  static Future<void> toggleFullScreen() async {
     return await _channel.invokeMethod('toggleFullScreen');
   }
 
-  static Future setFullScreen(bool fullscreen) async {
+  static Future<void> setFullScreen(bool fullscreen) async {
     return await _channel
         .invokeMethod('setFullScreen', {'fullscreen': fullscreen});
   }
 
-  static Future getFullScreen() async {
+  static Future<bool> getFullScreen() async {
     final fullscreen = await _channel.invokeMethod('getFullScreen');
     if (fullscreen is bool) return fullscreen;
     throw fullscreen;
@@ -54,11 +54,11 @@ class DesktopWindow {
     throw hasBorders;
   }
 
-  static Future toggleBorders() async {
+  static Future<void> toggleBorders() async {
     return await _channel.invokeMethod('toggleBorders');
   }
 
-  static Future setBorders(bool border) async {
+  static Future<void> setBorders(bool border) async {
     return await _channel.invokeMethod('setBorders', {'border': border});
   }
 }
