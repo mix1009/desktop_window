@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
@@ -60,5 +63,11 @@ class DesktopWindow {
 
   static Future<void> setBorders(bool border) async {
     return await _channel.invokeMethod('setBorders', {'border': border});
+  }
+
+  static Future<void> stayFocused([bool stayFocused = true]) async {
+    if (kIsWeb || !(Platform.isWindows || Platform.isLinux)) return;
+    return await _channel
+        .invokeMethod('stayFocused', {'stayFocused': stayFocused});
   }
 }

@@ -20,6 +20,7 @@ namespace DesktopWindowMethodCall
         void setBorders();
         void hasBorders();
         void toggleBorders();
+        void stayFocused();
 
     private:
         const flutter::MethodCall<flutter::EncodableValue> &method_call;
