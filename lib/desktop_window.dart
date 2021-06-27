@@ -61,4 +61,8 @@ class DesktopWindow {
   static Future<void> setBorders(bool border) async {
     return await _channel.invokeMethod('setBorders', {'border': border});
   }
+
+  static Future<void> focus() async {
+    return await _channel.invokeMethod('focus');
+  }
 }
