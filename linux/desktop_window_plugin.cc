@@ -35,7 +35,7 @@ static void desktop_window_plugin_handle_method_call(
   }
   else if (strcmp(method, "getWindowSize") == 0)
   {
-    if (!gtk_widget_is_toplevel(self->widget))
+    if (gtk_widget_is_toplevel(self->widget))
     {
       gint width;
       gint height;
@@ -44,7 +44,7 @@ static void desktop_window_plugin_handle_method_call(
 
       g_autoptr(FlValue) list = fl_value_new_list();
       fl_value_append_take(list, fl_value_new_float((float)width));
-      fl_value_append_take(list, fl_value_new_float((float)width));
+      fl_value_append_take(list, fl_value_new_float((float)height));
 
       response = FL_METHOD_RESPONSE(fl_method_success_response_new(list));
     }
