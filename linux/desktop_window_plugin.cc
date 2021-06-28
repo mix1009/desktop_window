@@ -31,6 +31,7 @@ static void desktop_window_plugin_handle_method_call(
   }
   else if (strcmp(method, "getWindowSize") == 0)
   {
+1-add-titlebar-support
     gint width;
     gint height;
 
