@@ -109,6 +109,9 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
       case "hasBorders":
         result(!window.styleMask.contains(.borderless))
 
+      case "focus":
+        NSApplication.activate(ignoringOtherApps: true)
+        
       default:
         result(FlutterMethodNotImplemented)
       }

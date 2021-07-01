@@ -222,6 +222,8 @@ namespace
       setMaxWindowSize(method_call, std::move(result));
     else if (method_name == "stayFocused")
       methodCall.stayFocused();
+    else if (method_name == "focus")
+      methodCall.focus();
     else
       result->NotImplemented();
   }

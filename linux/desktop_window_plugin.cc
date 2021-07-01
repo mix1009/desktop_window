@@ -31,6 +31,7 @@ static void desktop_window_plugin_handle_method_call(
   }
   else if (strcmp(method, "getWindowSize") == 0)
   {
+1-add-titlebar-support
     gint width;
     gint height;
 
@@ -127,6 +128,11 @@ static void desktop_window_plugin_handle_method_call(
     bool isDecorated = (bool)gtk_window_get_decorated((GtkWindow *)self->widget);
     gtk_window_set_decorated((GtkWindow *)self->widget, !isDecorated);
 
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+  } 
+  else if (strcmp(method, "focus") == 0)
+  {
+    gtk_window_present((GtkWindow *) self->widget);
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
   }
   else if(strcmp(method, "stayFocused") == 0){

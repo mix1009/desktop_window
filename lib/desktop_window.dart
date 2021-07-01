@@ -75,4 +75,8 @@ class DesktopWindow {
       throw UnsupportedError(
           "only Linux and Windows support windows staying focused");
   }
+    
+  static Future<void> focus() async {
+    return await _channel.invokeMethod('focus');
+  }
 }

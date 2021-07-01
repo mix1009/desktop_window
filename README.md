@@ -24,12 +24,12 @@ Future testWindowFunctions() async {
     await DesktopWindow.setBorders(false);
     await DesktopWindow.setBorders(true);
     await DesktopWindow.toggleBorders();
-
+    await DesktopWindow.focus();
 }
 ```
 
 
 ## Contributers
 
-Linux support has been contributed by Justus Fluegel (https://github.com/Technikkeller)
+Linux support has been contributed by Justus Fluegel (https://github.com/JustusFluegel)
 
