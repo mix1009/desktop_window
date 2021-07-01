@@ -40,17 +40,17 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('$_windowSize\n'),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("getWindowSize"),
                 onPressed: _getWindowSize,
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("setMinWindowSize(300,400)"),
                 onPressed: () async {
                   await DesktopWindow.setMinWindowSize(Size(300, 400));
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("setMaxWindowSize(800,800)"),
                 onPressed: () async {
                   await DesktopWindow.setMaxWindowSize(Size(800, 800));
@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
               ),
               Wrap(
                 children: [
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text("Smaller"),
                     onPressed: () async {
                       var size = await DesktopWindow.getWindowSize();
@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
                       await _getWindowSize();
                     },
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text("Larger"),
                     onPressed: () async {
                       var size = await DesktopWindow.getWindowSize();
@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
               ),
               Wrap(
                 children: [
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text("toggleFullScreen"),
                     onPressed: () async {
                       await DesktopWindow.resetMaxWindowSize();
@@ -88,30 +88,70 @@ class _MyAppState extends State<MyApp> {
                     },
                   ),
                   Builder(builder: (ctx) {
-                    return RaisedButton(
+                    return ElevatedButton(
                       child: Text("getFullScreen"),
                       onPressed: () async {
                         final isFullScreen =
                             await DesktopWindow.getFullScreen();
-                        Scaffold.of(ctx).showSnackBar(SnackBar(
+                        ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
                             content: Text('getFullScreen = $isFullScreen'),
                             duration: Duration(seconds: 1)));
                       },
                     );
                   }),
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text("setFullScreen(true)"),
                     onPressed: () async {
                       await DesktopWindow.setFullScreen(true);
                     },
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text("setFullScreen(false)"),
                     onPressed: () async {
                       await DesktopWindow.setFullScreen(false);
                     },
                   ),
                 ],
+              ),
+              Wrap(
+                children: [
+                  ElevatedButton(
+                    child: Text("toggleBorders"),
+                    onPressed: () async {
+                      await DesktopWindow.toggleBorders();
+                    },
+                  ),
+                  Builder(builder: (ctx) {
+                    return ElevatedButton(
+                      child: Text("setBorders(true)"),
+                      onPressed: () async {
+                        await DesktopWindow.setBorders(true);
+                      },
+                    );
+                  }),
+                  ElevatedButton(
+                    child: Text("setBorders(false)"),
+                    onPressed: () async {
+                      await DesktopWindow.setBorders(false);
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Text("hasBorders"),
+                    onPressed: () async {
+                      print('hasBorders: ' +
+                          (await DesktopWindow.hasBorders ? 'true' : 'false'));
+                    },
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                child: Text("focus"),
+                onPressed: () {
+                  Timer(Duration(seconds: 3), () async {
+                    print('focus!!!');
+                    await DesktopWindow.focus();
+                  });
+                },
               ),
             ],
           ),
