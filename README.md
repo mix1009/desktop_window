@@ -20,6 +20,11 @@ Future testWindowFunctions() async {
     bool isFullScreen = await DesktopWindow.getFullScreen();
     await DesktopWindow.setFullScreen(true);
     await DesktopWindow.setFullScreen(false);
+    bool hasBorders = await DesktopWindow.hasBorders;
+    await DesktopWindow.setBorders(false);
+    await DesktopWindow.setBorders(true);
+    await DesktopWindow.toggleBorders();
+
 }
 ```
 
