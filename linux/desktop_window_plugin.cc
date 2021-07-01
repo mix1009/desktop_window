@@ -129,6 +129,11 @@ static void desktop_window_plugin_handle_method_call(
     gtk_window_set_decorated((GtkWindow *)self->widget, !isDecorated);
 
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+  } 
+  else if (strcmp(method, "focus") == 0)
+  {
+    gtk_window_present((GtkWindow *) self->widget);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
   }
 
   if (response == nullptr)

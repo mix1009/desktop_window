@@ -220,6 +220,8 @@ namespace
       setMinWindowSize(method_call, std::move(result));
     else if (method_name == "setMaxWindowSize")
       setMaxWindowSize(method_call, std::move(result));
+    else if (method_name == "focus")
+      methodCall.focus();
     else
       result->NotImplemented();
   }

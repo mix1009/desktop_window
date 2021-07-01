@@ -24,7 +24,7 @@ Future testWindowFunctions() async {
     await DesktopWindow.setBorders(false);
     await DesktopWindow.setBorders(true);
     await DesktopWindow.toggleBorders();
-
+    await DesktopWindow.focus();
 }
 ```
 
