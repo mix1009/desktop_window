@@ -110,7 +110,8 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
         result(!window.styleMask.contains(.borderless))
 
       case "focus":
-        NSApplication.activate(ignoringOtherApps: true)
+        NSApplication.shared.activate(ignoringOtherApps: true)
+        result(true)
         
       default:
         result(FlutterMethodNotImplemented)
