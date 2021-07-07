@@ -131,7 +131,7 @@ namespace DesktopWindowMethodCall
     void MethodCall::focus()
     {
         HWND hWnd = GetActiveWindow();
-        SetFocus(hwnd);
+        SetFocus(hWnd);
 
         result->Success(flutter::EncodableValue(true));
     }
