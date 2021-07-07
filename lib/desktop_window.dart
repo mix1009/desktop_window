@@ -65,17 +65,15 @@ class DesktopWindow {
     return await _channel.invokeMethod('setBorders', {'border': border});
   }
 
-  static Future<void> stayFocused(
-      [bool stayFocused = true,
-      bool throwOnUnsupportedPlatform = false]) async {
-    if (!kIsWeb && (Platform.isWindows || Platform.isLinux))
-      return await _channel
-          .invokeMethod('stayFocused', {'stayFocused': stayFocused});
+  static Future<void> stayOnTop(
+      [bool stayOnTop = true, bool throwOnUnsupportedPlatform = false]) async {
+    if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS))
+      return await _channel.invokeMethod('stayOnTop', {'stayOnTop': stayOnTop});
     else if (throwOnUnsupportedPlatform)
       throw UnsupportedError(
           "only Linux and Windows support windows staying focused");
   }
-    
+
   static Future<void> focus() async {
     return await _channel.invokeMethod('focus');
   }

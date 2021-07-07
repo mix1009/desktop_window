@@ -135,9 +135,9 @@ static void desktop_window_plugin_handle_method_call(
     gtk_window_present((GtkWindow *) self->widget);
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
   }
-  else if(strcmp(method, "stayFocused") == 0){
-    bool stayFocused = !fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("stayFocused")));
-    gdk_window_set_keep_above(gtk_widget_get_window(self->widget), stayFocused);
+  else if(strcmp(method, "stayOnTop") == 0){
+    bool stayOnTop = !fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("stayOnTop")));
+    gdk_window_set_keep_above(gtk_widget_get_window(self->widget), stayOnTop);
     response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
   }
   

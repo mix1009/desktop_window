@@ -112,7 +112,17 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
       case "focus":
         NSApplication.shared.activate(ignoringOtherApps: true)
         result(true)
-        
+
+      case "stayOnTop":
+        if let bstayOnTop: Bool = (call.arguments as? [String: Any])?["stayOnTop"] as? Bool {
+          if bstayOnTop {
+            window.level = .floating;
+          } else {
+            window.level = .normal;
+          }
+        }
+        result(true)
+
       default:
         result(FlutterMethodNotImplemented)
       }

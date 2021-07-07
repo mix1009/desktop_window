@@ -144,14 +144,32 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ],
               ),
-              ElevatedButton(
-                child: Text("focus"),
-                onPressed: () {
-                  Timer(Duration(seconds: 3), () async {
-                    print('focus!!!');
-                    await DesktopWindow.focus();
-                  });
-                },
+              Wrap(
+                children: [
+                  ElevatedButton(
+                    child: Text("focus"),
+                    onPressed: () {
+                      Timer(Duration(seconds: 3), () async {
+                        print('focus!!!');
+                        await DesktopWindow.focus();
+                      });
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Text("stayOnTop(true)"),
+                    onPressed: () async {
+                      print('stayOnTop(true)');
+                      await DesktopWindow.stayOnTop(true);
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Text("stayOnTop(false)"),
+                    onPressed: () async {
+                      print('stayOnTop(false)');
+                      await DesktopWindow.stayOnTop(false);
+                    },
+                  ),
+                ],
               ),
             ],
           ),

@@ -220,8 +220,8 @@ namespace
       setMinWindowSize(method_call, std::move(result));
     else if (method_name == "setMaxWindowSize")
       setMaxWindowSize(method_call, std::move(result));
-    else if (method_name == "stayFocused")
-      methodCall.stayFocused();
+    else if (method_name == "stayOnTop")
+      methodCall.stayOnTop();
     else if (method_name == "focus")
       methodCall.focus();
     else

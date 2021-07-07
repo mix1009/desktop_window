@@ -105,16 +105,16 @@ namespace DesktopWindowMethodCall
         result->Success(flutter::EncodableValue(true));
     }
 
-    void MethodCall:stayFocused()
+    void MethodCall:stayOnTop()
     {
         const auto *arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
-        bool stayFocused = false;
+        bool stayOnTop = false;
         if (arguments)
         {
-            auto fs_it = arguments->find(flutter::EncodableValue("stayFocused"));
+            auto fs_it = arguments->find(flutter::EncodableValue("stayOnTop"));
             if (fs_it != arguments->end())
             {
-                stayFocused = std::get<bool>(fs_it->second);
+                stayOnTop = std::get<bool>(fs_it->second);
             }
         }
 
@@ -122,7 +122,7 @@ namespace DesktopWindowMethodCall
 
         RECT rect;
         GetWindowRect(hWnd, &rect);
-        SetWindowPos(hWnd, stayFocused? HWND_TOPMOST: HWND_TOP, rect.left, rect.top, rect.right-rect.left, rect.bottom -rect.top, SWP_SHOWWINDOW);
+        SetWindowPos(hWnd, stayOnTop? HWND_TOPMOST: HWND_TOP, rect.left, rect.top, rect.right-rect.left, rect.bottom -rect.top, SWP_SHOWWINDOW);
         
         result->Success(flutter::EncodableValue(true));
     }
