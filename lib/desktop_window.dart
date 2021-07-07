@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
@@ -62,6 +65,17 @@ class DesktopWindow {
     return await _channel.invokeMethod('setBorders', {'border': border});
   }
 
+  static Future<void> stayFocused(
+      [bool stayFocused = true,
+      bool throwOnUnsupportedPlatform = false]) async {
+    if (!kIsWeb && (Platform.isWindows || Platform.isLinux))
+      return await _channel
+          .invokeMethod('stayFocused', {'stayFocused': stayFocused});
+    else if (throwOnUnsupportedPlatform)
+      throw UnsupportedError(
+          "only Linux and Windows support windows staying focused");
+  }
+    
   static Future<void> focus() async {
     return await _channel.invokeMethod('focus');
   }

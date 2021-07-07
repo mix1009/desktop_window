@@ -105,6 +105,29 @@ namespace DesktopWindowMethodCall
         result->Success(flutter::EncodableValue(true));
     }
 
+    void MethodCall:stayFocused()
+    {
+        const auto *arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+        bool stayFocused = false;
+        if (arguments)
+        {
+            auto fs_it = arguments->find(flutter::EncodableValue("stayFocused"));
+            if (fs_it != arguments->end())
+            {
+                stayFocused = std::get<bool>(fs_it->second);
+            }
+        }
+
+        HWND hWnd = GetActiveWindow();
+
+        RECT rect;
+        GetWindowRect(hWnd, &rect);
+        SetWindowPos(hWnd, stayFocused? HWND_TOPMOST: HWND_TOP, rect.left, rect.top, rect.right-rect.left, rect.bottom -rect.top, SWP_SHOWWINDOW);
+        
+        result->Success(flutter::EncodableValue(true));
+    }
+
+  
     void MethodCall::focus()
     {
         HWND hWnd = GetActiveWindow();

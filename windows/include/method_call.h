@@ -20,6 +20,7 @@ namespace DesktopWindowMethodCall
         void setBorders();
         void hasBorders();
         void toggleBorders();
+        void stayFocused();
         void focus();
 
     private:
