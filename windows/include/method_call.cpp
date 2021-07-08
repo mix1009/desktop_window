@@ -105,7 +105,7 @@ namespace DesktopWindowMethodCall
         result->Success(flutter::EncodableValue(true));
     }
 
-    void MethodCall:stayOnTop()
+    void MethodCall::stayOnTop()
     {
         const auto *arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
         bool stayOnTop = false;
