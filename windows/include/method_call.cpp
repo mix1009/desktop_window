@@ -122,7 +122,7 @@ namespace DesktopWindowMethodCall
 
         RECT rect;
         GetWindowRect(hWnd, &rect);
-        SetWindowPos(hWnd, stayOnTop? HWND_TOPMOST: HWND_TOP, rect.left, rect.top, rect.right-rect.left, rect.bottom -rect.top, SWP_SHOWWINDOW);
+        SetWindowPos(hWnd, stayOnTop? HWND_TOPMOST: HWND_NOTOPMOST, rect.left, rect.top, rect.right-rect.left, rect.bottom -rect.top, SWP_SHOWWINDOW);
         
         result->Success(flutter::EncodableValue(true));
     }
