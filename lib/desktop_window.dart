@@ -17,9 +17,9 @@ class DesktopWindow {
     throw arr;
   }
 
-  static Future<void> setWindowSize(Size size) async {
-    return await _channel.invokeMethod(
-        'setWindowSize', {'width': size.width, 'height': size.height});
+  static Future<void> setWindowSize(Size size, {bool animate = false}) async {
+    return await _channel.invokeMethod('setWindowSize',
+        {'width': size.width, 'height': size.height, 'animate': animate});
   }
 
   static Future<void> setMinWindowSize(Size size) async {

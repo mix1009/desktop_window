@@ -19,14 +19,15 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
 
       case "setWindowSize":
         if let width: Float = (call.arguments as? [String: Any])?["width"] as? Float,
-          let height: Float = (call.arguments as? [String: Any])?["height"] as? Float
+          let height: Float = (call.arguments as? [String: Any])?["height"] as? Float,
+          let animate: Bool = (call.arguments as? [String: Any])?["animate"] as? Bool
         {
           var rect = window.frame
           rect.origin.y += (rect.size.height - CGFloat(height))
           rect.size.width = CGFloat(width)
           rect.size.height = CGFloat(height)
 
-          window.setFrame(rect, display: true)
+          window.animator().setFrame(rect, display: true, animate: animate)
 
         }
 
