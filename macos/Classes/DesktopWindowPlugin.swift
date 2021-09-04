@@ -9,7 +9,8 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    if let window = NSApplication.shared.mainWindow {
+    let firstWindow = NSApplication.shared.windows.isEmpty ? nil : NSApplication.shared.windows[0]
+    if let window = NSApplication.shared.mainWindow ?? firstWindow {
       switch call.method {
 
       case "getWindowSize":
