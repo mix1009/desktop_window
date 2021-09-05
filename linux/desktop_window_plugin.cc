@@ -27,7 +27,7 @@ static void desktop_window_plugin_handle_method_call(
 
   if (!gtk_widget_is_toplevel(self->widget))
   {
-    response = FL_METHOD_RESPONSE(fl_method_error_response_new("MAINWINDOW_NOT_FOUND", "GtkWindow not found", fl_value_new_null()));
+    response = FL_METHOD_RESPONSE(fl_method_error_response_new("MAINWINDOW_NOT_FOUND", "GtkWindow not found", nullptr));
   }
   else if (strcmp(method, "getWindowSize") == 0)
   {
@@ -44,36 +44,39 @@ static void desktop_window_plugin_handle_method_call(
   }
   else if (strcmp(method, "setWindowSize") == 0)
   {
-    const float width = fl_value_get_float(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("width")));
-    const float height = fl_value_get_float(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("height")));
+    const float width = fl_value_get_float(fl_value_lookup_string(fl_method_call_get_args(method_call), "width"));
+    const float height = fl_value_get_float(fl_value_lookup_string(fl_method_call_get_args(method_call), "height"));
 
     gtk_window_resize((GtkWindow *)self->widget, (int)width, (int)height);
 
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   else if (strcmp(method, "setMinWindowSize") == 0)
   {
-    const float width = fl_value_get_float(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("width")));
-    const float height = fl_value_get_float(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("height")));
+    const float width = fl_value_get_float(fl_value_lookup(fl_method_call_get_args(method_call), "width"));
+    const float height = fl_value_get_float(fl_value_lookup(fl_method_call_get_args(method_call), "height"));
 
     GdkGeometry geometry;
     geometry.min_height = (int)height;
     geometry.min_width = (int)width;
     gdk_window_set_geometry_hints(gtk_widget_get_window(self->widget), &geometry, GDK_HINT_MIN_SIZE);
 
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   else if (strcmp(method, "setMaxWindowSize") == 0)
   {
-    const float width = fl_value_get_float(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("width")));
-    const float height = fl_value_get_float(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("height")));
+    const float width = fl_value_get_float(fl_value_lookup_string(fl_method_call_get_args(method_call), "width"));
+    const float height = fl_value_get_float(fl_value_lookup_string(fl_method_call_get_args(method_call), "height"));
 
     GdkGeometry geometry;
     geometry.max_height = ((int)height) == 0 ? INT_MAX : ((int)height);
     geometry.max_width = ((int)width) == 0 ? INT_MAX : ((int)width);
     gdk_window_set_geometry_hints(gtk_widget_get_window(self->widget), &geometry, GDK_HINT_MAX_SIZE);
 
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   else if (strcmp(method, "resetMaxWindowSize") == 0)
   {
@@ -82,7 +85,8 @@ static void desktop_window_plugin_handle_method_call(
     geometry.max_width = INT_MAX;
     gdk_window_set_geometry_hints(gtk_widget_get_window(self->widget), &geometry, GDK_HINT_MAX_SIZE);
 
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   else if (strcmp(method, "toggleFullScreen") == 0)
   {
@@ -92,52 +96,60 @@ static void desktop_window_plugin_handle_method_call(
     else
       gtk_window_unfullscreen((GtkWindow *)self->widget);
 
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   else if (strcmp(method, "setFullScreen") == 0)
   {
-    bool fullscreen = fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("fullscreen")));
+    bool fullscreen = fl_value_get_bool(fl_value_lookup_string(fl_method_call_get_args(method_call), "fullscreen"));
 
     if (fullscreen)
       gtk_window_fullscreen((GtkWindow *)self->widget);
     else
       gtk_window_unfullscreen((GtkWindow *)self->widget);
 
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   else if (strcmp(method, "getFullScreen") == 0)
   {
     bool isFullscreen = (bool)(gdk_window_get_state(gtk_widget_get_window(self->widget)) & GDK_WINDOW_STATE_FULLSCREEN);
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(isFullscreen)));
+    g_autoptr(FlValue) result = fl_value_new_bool(isDecorated);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   else if (strcmp(method, "hasBorders") == 0)
   {
     bool isDecorated = (bool)gtk_window_get_decorated((GtkWindow *)self->widget);
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(isDecorated)));
+    g_autoptr(FlValue) result = fl_value_new_bool(isDecorated);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   else if (strcmp(method, "setBorders") == 0)
   {
-    bool decorated = fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("border")));
+    bool decorated = fl_value_get_bool(fl_value_lookup_string(fl_method_call_get_args(method_call), "border"));
     gtk_window_set_decorated((GtkWindow *)self->widget, decorated);
 
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   else if (strcmp(method, "toggleBorders") == 0)
   {
     bool isDecorated = (bool)gtk_window_get_decorated((GtkWindow *)self->widget);
     gtk_window_set_decorated((GtkWindow *)self->widget, !isDecorated);
 
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   } 
   else if (strcmp(method, "focus") == 0)
   {
     gtk_window_present((GtkWindow *) self->widget);
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   else if(strcmp(method, "stayOnTop") == 0){
-    bool stayOnTop = !fl_value_get_bool(fl_value_lookup(fl_method_call_get_args(method_call), fl_value_new_string("stayOnTop")));
+    bool stayOnTop = !fl_value_get_bool(fl_value_lookup_string(fl_method_call_get_args(method_call), "stayOnTop"));
     gdk_window_set_keep_above(gtk_widget_get_window(self->widget), stayOnTop);
-    response = FL_METHOD_RESPONSE(fl_method_success_response_new(fl_value_new_bool(true)));
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    response = FL_METHOD_RESPONSE(fl_method_success_response_new(result));
   }
   
 
