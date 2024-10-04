@@ -1,3 +1,7 @@
+## 0.4.1 - 2024/10/04
+* macos: Use first window when mainWindow is nil
+
+
 ## 0.4.0 - 2021/03/09
 * null safety
 
