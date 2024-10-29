@@ -3,6 +3,7 @@
 
 namespace DesktopWindowMethodCall
 {
+
     MethodCall::MethodCall(const flutter::MethodCall<flutter::EncodableValue> &Cmethod_call,
                            std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> Cresult): method_call(Cmethod_call)
     {
@@ -132,6 +133,126 @@ namespace DesktopWindowMethodCall
     {
         HWND hWnd = GetActiveWindow();
         SetFocus(hWnd);
+
+        result->Success(flutter::EncodableValue(true));
+    }
+
+    void MethodCall::getWindowSize() {
+        HWND hwnd = GetActiveWindow();
+        if (!hwnd) {
+            result->Error("WINDOW_ERROR", "Unable to get active window.");
+            return;
+        }
+
+        RECT rect;
+        GetWindowRect(hwnd, &rect);
+
+        LONG lWidth = rect.right - rect.left;
+        LONG lHeight = rect.bottom - rect.top;
+
+        double width = lWidth * 1.0f;
+        double height = lHeight * 1.0f;
+
+        result->Success(flutter::EncodableValue(flutter::EncodableList{flutter::EncodableValue(width), flutter::EncodableValue(height)}));
+    }
+
+    void MethodCall::setWindowSize() {
+        double width = 0;
+        double height = 0;
+        const auto *arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+        if (arguments)
+        {
+        auto width_it = arguments->find(flutter::EncodableValue("width"));
+        if (width_it != arguments->end())
+        {
+            width = std::get<double>(width_it->second);
+        }
+        auto height_it = arguments->find(flutter::EncodableValue("height"));
+        if (height_it != arguments->end())
+        {
+            height = std::get<double>(height_it->second);
+        }
+        }
+        if (width == 0 || height == 0)
+        {
+        result->Error("argument_error", "width or height not provided");
+        return;
+        }
+
+        HWND handle = GetActiveWindow();
+
+        int iWidth = int(width + 0.5);
+        int iHeight = int(height + 0.5);
+
+        SetWindowPos(handle, HWND_TOP, 0, 0, iWidth, iHeight, SWP_NOMOVE);
+
+        result->Success(flutter::EncodableValue(true));
+    }
+
+    void MethodCall::resetMaxWindowSize(int &maxWidth, int &maxHeight)
+    {
+        maxWidth = 0;
+        maxHeight = 0;
+
+        result->Success(flutter::EncodableValue(true));
+    }
+
+    void MethodCall::setMinWindowSize(int &minWidth, int &minHeight)
+    {
+        double width = 0;
+        double height = 0;
+        const auto *arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+        if (arguments)
+        {
+        auto width_it = arguments->find(flutter::EncodableValue("width"));
+        if (width_it != arguments->end())
+        {
+            width = std::get<double>(width_it->second);
+        }
+        auto height_it = arguments->find(flutter::EncodableValue("height"));
+        if (height_it != arguments->end())
+        {
+            height = std::get<double>(height_it->second);
+        }
+        }
+        if (width == 0 || height == 0)
+        {
+        result->Error("argument_error", "width or height not provided");
+        return;
+        }
+
+        minWidth = int(width + 0.5);
+        minHeight = int(height + 0.5);
+
+        result->Success(flutter::EncodableValue(true));
+    }
+
+    void MethodCall::setMaxWindowSize(int &maxWidth, int &maxHeight)
+    {
+        double width = 0;
+        double height = 0;
+        const auto *arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+        if (arguments)
+        {
+        auto width_it = arguments->find(flutter::EncodableValue("width"));
+        if (width_it != arguments->end())
+        {
+            width = std::get<double>(width_it->second);
+        }
+        auto height_it = arguments->find(flutter::EncodableValue("height"));
+        if (height_it != arguments->end())
+        {
+            height = std::get<double>(height_it->second);
+        }
+        }
+        if (width == 0 || height == 0)
+        {
+        result->Error("argument_error", "width or height not provided");
+        return;
+        }
+
+        maxWidth = int(width + 0.5);
+        maxHeight = int(height + 0.5);
 
         result->Success(flutter::EncodableValue(true));
     }

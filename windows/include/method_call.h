@@ -22,6 +22,11 @@ namespace DesktopWindowMethodCall
         void toggleBorders();
         void stayOnTop();
         void focus();
+        void getWindowSize();
+        void setWindowSize();
+        void resetMaxWindowSize(int &maxWidth, int &maxHeight);
+        void setMinWindowSize(int &minWidth, int &minHeight);
+        void setMaxWindowSize(int &maxWidth, int &maxHeight);
 
     private:
         const flutter::MethodCall<flutter::EncodableValue> &method_call;
