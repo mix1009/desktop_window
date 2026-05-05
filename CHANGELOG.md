@@ -1,5 +1,14 @@
+## 0.4.3 - 2026/05/05
+* update: SDK constraint to >=3.3.0 <4.0.0, Flutter >=3.19.0
+* macos: fix podspec metadata and bump deployment target to 10.14
+* macos: fix setBorders bug (key mismatch)
+* fix: remove unnecessary import, const cleanup in library dart file
+* example: bump cupertino_icons to 1.0.9, fix dart lint warnings
+
+
 ## 0.4.2 - 2024/10/29
 * windows: fix crash issue
+
 
 
 ## 0.4.1 - 2024/10/04

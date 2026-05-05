@@ -89,27 +89,25 @@ public class DesktopWindowPlugin: NSObject, FlutterPlugin {
         result(window.styleMask.contains(.fullScreen))
 
       case "toggleBorders":
-        if window.styleMask.contains(.borderless) {
-          window.styleMask.remove(.borderless)
+        if window.styleMask.contains(.titled) {
+          window.styleMask = .borderless
         } else {
-          window.styleMask.insert(.borderless)
+          window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
         }
         result(true)
 
       case "setBorders":
-        if let bBorders: Bool = (call.arguments as? [String: Any])?["borders"] as? Bool {
-          if window.styleMask.contains(.borderless) == bBorders {
-            if bBorders {
-              window.styleMask.remove(.borderless)
-            } else {
-              window.styleMask.insert(.borderless)
-            }
+        if let bBorders: Bool = (call.arguments as? [String: Any])?["border"] as? Bool {
+          if bBorders {
+            window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+          } else {
+            window.styleMask = .borderless
           }
           result(true)
         }
 
       case "hasBorders":
-        result(!window.styleMask.contains(.borderless))
+        result(window.styleMask.contains(.titled))
 
       case "focus":
         NSApplication.shared.activate(ignoringOtherApps: true)

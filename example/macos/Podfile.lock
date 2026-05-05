@@ -1,23 +1,22 @@
 PODS:
-  - desktop_window (0.0.1):
+  - desktop_window (0.4.3):
     - FlutterMacOS
-  - FlutterMacOS (2.0.0)
+  - FlutterMacOS (1.0.0)
 
 DEPENDENCIES:
   - desktop_window (from `Flutter/ephemeral/.symlinks/plugins/desktop_window/macos`)
-
-SPEC REPOS:
-  trunk:
-    - FlutterMacOS
+  - FlutterMacOS (from `Flutter/ephemeral`)
 
 EXTERNAL SOURCES:
   desktop_window:
     :path: Flutter/ephemeral/.symlinks/plugins/desktop_window/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
 
 SPEC CHECKSUMS:
-  desktop_window: fb7c4f12c1129f947ac482296b6f14059d57a3c3
-  FlutterMacOS: 2f1b456c4d9436c4d4d13919bd3be8ef03ba6322
+  desktop_window: 52be864a782cbdae77ad04ca4547bd62073ced4a
+  FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
 
-PODFILE CHECKSUM: d8ba9b3e9e93c62c74a660b46c6fcb09f03991a7
+PODFILE CHECKSUM: 9de470a4b67267229f0972ae5593f8908469c164
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.16.2

@@ -4,10 +4,9 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
 
 class DesktopWindow {
-  static const MethodChannel _channel = const MethodChannel('desktop_window');
+  static const MethodChannel _channel = MethodChannel('desktop_window');
 
   static Future<Size> getWindowSize() async {
     final arr = await _channel.invokeMethod('getWindowSize');

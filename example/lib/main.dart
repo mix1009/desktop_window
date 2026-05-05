@@ -4,15 +4,17 @@ import 'dart:async';
 import 'package:desktop_window/desktop_window.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   String _windowSize = 'Unknown';
 
   @override
@@ -29,7 +31,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // MediaQuery.of(context).size;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -41,133 +42,135 @@ class _MyAppState extends State<MyApp> {
             children: [
               Text('$_windowSize\n'),
               ElevatedButton(
-                child: Text("getWindowSize"),
                 onPressed: _getWindowSize,
+                child: const Text('getWindowSize'),
               ),
               ElevatedButton(
-                child: Text("setMinWindowSize(300,400)"),
                 onPressed: () async {
-                  await DesktopWindow.setMinWindowSize(Size(300, 400));
+                  await DesktopWindow.setMinWindowSize(const Size(300, 400));
                 },
+                child: const Text('setMinWindowSize(300,400)'),
               ),
               ElevatedButton(
-                child: Text("setMaxWindowSize(800,800)"),
                 onPressed: () async {
-                  await DesktopWindow.setMaxWindowSize(Size(800, 800));
+                  await DesktopWindow.setMaxWindowSize(const Size(800, 800));
                 },
+                child: const Text('setMaxWindowSize(800,800)'),
               ),
               Wrap(
                 children: [
                   ElevatedButton(
-                    child: Text("Smaller"),
                     onPressed: () async {
                       var size = await DesktopWindow.getWindowSize();
                       await DesktopWindow.setWindowSize(
                           Size(size.width - 50, size.height - 50));
                       await _getWindowSize();
                     },
+                    child: const Text('Smaller'),
                   ),
                   ElevatedButton(
-                    child: Text("Larger"),
                     onPressed: () async {
                       var size = await DesktopWindow.getWindowSize();
                       await DesktopWindow.setWindowSize(
                           Size(size.width + 50, size.height + 50));
                       await _getWindowSize();
                     },
+                    child: const Text('Larger'),
                   ),
                 ],
               ),
               Wrap(
                 children: [
                   ElevatedButton(
-                    child: Text("toggleFullScreen"),
                     onPressed: () async {
                       await DesktopWindow.resetMaxWindowSize();
                       await DesktopWindow.toggleFullScreen();
                     },
+                    child: const Text('toggleFullScreen'),
                   ),
                   Builder(builder: (ctx) {
                     return ElevatedButton(
-                      child: Text("getFullScreen"),
                       onPressed: () async {
                         final isFullScreen =
                             await DesktopWindow.getFullScreen();
                         ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
                             content: Text('getFullScreen = $isFullScreen'),
-                            duration: Duration(seconds: 1)));
+                            duration: const Duration(seconds: 1)));
                       },
+                      child: const Text('getFullScreen'),
                     );
                   }),
                   ElevatedButton(
-                    child: Text("setFullScreen(true)"),
                     onPressed: () async {
                       await DesktopWindow.setFullScreen(true);
                     },
+                    child: const Text('setFullScreen(true)'),
                   ),
                   ElevatedButton(
-                    child: Text("setFullScreen(false)"),
                     onPressed: () async {
                       await DesktopWindow.setFullScreen(false);
                     },
+                    child: const Text('setFullScreen(false)'),
                   ),
                 ],
               ),
               Wrap(
                 children: [
                   ElevatedButton(
-                    child: Text("toggleBorders"),
                     onPressed: () async {
                       await DesktopWindow.toggleBorders();
                     },
+                    child: const Text('toggleBorders'),
                   ),
-                  Builder(builder: (ctx) {
-                    return ElevatedButton(
-                      child: Text("setBorders(true)"),
-                      onPressed: () async {
-                        await DesktopWindow.setBorders(true);
-                      },
-                    );
-                  }),
                   ElevatedButton(
-                    child: Text("setBorders(false)"),
+                    onPressed: () async {
+                      await DesktopWindow.setBorders(true);
+                    },
+                    child: const Text('setBorders(true)'),
+                  ),
+                  ElevatedButton(
                     onPressed: () async {
                       await DesktopWindow.setBorders(false);
                     },
+                    child: const Text('setBorders(false)'),
                   ),
                   ElevatedButton(
-                    child: Text("hasBorders"),
                     onPressed: () async {
+                      // ignore: avoid_print
                       print('hasBorders: ' +
                           (await DesktopWindow.hasBorders ? 'true' : 'false'));
                     },
+                    child: const Text('hasBorders'),
                   ),
                 ],
               ),
               Wrap(
                 children: [
                   ElevatedButton(
-                    child: Text("focus"),
                     onPressed: () {
-                      Timer(Duration(seconds: 3), () async {
+                      Timer(const Duration(seconds: 3), () async {
+                        // ignore: avoid_print
                         print('focus!!!');
                         await DesktopWindow.focus();
                       });
                     },
+                    child: const Text('focus'),
                   ),
                   ElevatedButton(
-                    child: Text("stayOnTop(true)"),
                     onPressed: () async {
+                      // ignore: avoid_print
                       print('stayOnTop(true)');
                       await DesktopWindow.stayOnTop(true);
                     },
+                    child: const Text('stayOnTop(true)'),
                   ),
                   ElevatedButton(
-                    child: Text("stayOnTop(false)"),
                     onPressed: () async {
+                      // ignore: avoid_print
                       print('stayOnTop(false)');
                       await DesktopWindow.stayOnTop(false);
                     },
+                    child: const Text('stayOnTop(false)'),
                   ),
                 ],
               ),
