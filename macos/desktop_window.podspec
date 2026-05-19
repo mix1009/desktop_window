@@ -13,7 +13,7 @@ Flutter desktop plugin (macOS/Linux/Windows) to get and change window size.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'ChunKoo Park' => 'mix1009@gmail.com' }
   s.source           = { :path => '.' }
-  s.source_files     = 'Classes/**/*'
+  s.source_files     = 'desktop_window/Sources/desktop_window/**/*'
   s.dependency 'FlutterMacOS'
 
   s.platform = :osx, '10.14'
