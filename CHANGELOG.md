@@ -1,3 +1,11 @@
+## 0.4.4 - 2026/05/29
+* feat(macos): add Swift Package Manager (SPM) support
+  - Relocate native macOS plugin source to `macos/desktop_window/Sources/desktop_window/`
+  - Add `Package.swift` SPM manifest under `macos/desktop_window/` targeting macOS 10.15
+  - Update `macos/desktop_window.podspec` to maintain CocoaPods backward compatibility
+  - Deintegrate CocoaPods from the example app to transition to a pure SPM runner setup
+  - Update minimum environment constraints to require Flutter >=3.41.0 and Dart >=3.11.0
+
 ## 0.4.3 - 2026/05/05
 * update: SDK constraint to >=3.3.0 <4.0.0, Flutter >=3.19.0
 * macos: fix podspec metadata and bump deployment target to 10.14
